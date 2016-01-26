@@ -64,20 +64,6 @@ public class TestDtoServiceServiceImpl implements TestDtoServiceService{
     }
 
     /**
-     * search for the testDtoService corresponding
-     * to the query.
-     */
-    @Transactional(readOnly = true)
-    public List<TestDtoServiceDTO> search(String query) {
-        log.debug("REST request to search TestDtoPaginations for query {}", query);
-        List<TestDtoServiceDTO> result = new ArrayList<>();
-        testDtoServiceSearchRepository.search(queryStringQuery(query)).forEach((item) -> {
-            result.add(testDtoServiceMapper.testDtoServiceToTestDtoServiceDTO(item));
-        });
-        return result;
-    }
-
-    /**
      *  get one testDtoService by id.
      *  @return the entity
      */
@@ -96,6 +82,20 @@ public class TestDtoServiceServiceImpl implements TestDtoServiceService{
         log.debug("Request to delete TestDtoService : {}", id);
         testDtoServiceRepository.delete(id);
         testDtoServiceSearchRepository.delete(id);
+    }
+
+    /**
+     * search for the testDtoService corresponding
+     * to the query.
+     */
+    @Transactional(readOnly = true)
+    public List<TestDtoServiceDTO> search(String query) {
+        log.debug("REST request to search TestDtoPaginations for query {}", query);
+        List<TestDtoServiceDTO> result = new ArrayList<>();
+        testDtoServiceSearchRepository.search(queryStringQuery(query)).forEach((item) -> {
+            result.add(testDtoServiceMapper.testDtoServiceToTestDtoServiceDTO(item));
+        });
+        return result;
     }
 
 }

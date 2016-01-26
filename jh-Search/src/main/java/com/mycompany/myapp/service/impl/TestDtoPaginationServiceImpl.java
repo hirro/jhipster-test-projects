@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,5 +89,6 @@ public class TestDtoPaginationServiceImpl implements TestDtoPaginationService{
         log.debug("REST request to search TestDtoPaginations for query {}", query);
         Page<TestDtoPagination> result = testDtoPaginationSearchRepository.search(queryStringQuery(query), pageable);
         return result;
-	}
+    }
+
 }
