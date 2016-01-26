@@ -87,26 +87,6 @@ public class TestDefaultObjectResource {
         return testDefaultObjectRepository.findAll();
             }
 
-
-    /**
-     * SEARCH  /_search/testDefaultObjects/:query -> search for the testDefaultObject corresponding
-     * to the query.
-     */
-    @RequestMapping(value = "/_search/testDefaultObjects/{query:.+}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public List<TestDefaultObject> searchTestDefaultObjects(@PathVariable String query) {
-
-        log.debug("REST request to search TestDefaultObjects for query {}", query);
-        return StreamSupport
-            .stream(testDefaultObjectSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
-//        return StreamSupport
-//            .stream(testDefaultObjectSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-//            .collect(Collectors.toList());
-    }
-
     /**
      * GET  /testDefaultObjects/:id -> get the "id" testDefaultObject.
      */
@@ -137,5 +117,20 @@ public class TestDefaultObjectResource {
         testDefaultObjectSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("testDefaultObject", id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/testDefaultObjects/:query -> search for the testDefaultObject corresponding
+     * to the query.
+     */
+    @RequestMapping(value = "/_search/testDefaultObjects/{query:.+}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<TestDefaultObject> searchTestDefaultObjects(@PathVariable String query) {
+        log.debug("REST request to search TestDefaultObjects for query {}", query);
+        return StreamSupport
+            .stream(testDefaultObjectSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+            }
 
 }

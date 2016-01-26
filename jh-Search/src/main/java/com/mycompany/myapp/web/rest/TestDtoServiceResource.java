@@ -128,9 +128,10 @@ public class TestDtoServiceResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Transactional(readOnly = true)
     public List<TestDtoServiceDTO> searchTestDtoServices(@PathVariable String query) {
-
-        log.debug("Request to search TestDtoServices for query {}", query);
+        log.debug("REST request to search TestDtoServices for query {}", query);
         return testDtoServiceService.search(query);
-    }    
+            }
+    
 }

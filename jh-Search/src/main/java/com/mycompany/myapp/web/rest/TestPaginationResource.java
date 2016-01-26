@@ -137,10 +137,10 @@ public class TestPaginationResource {
     @Timed
     public ResponseEntity<List<TestPagination>> searchTestPaginations(@PathVariable String query, Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to search TestPaginations for query {}", query);
-        final SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryStringQuery(query)).build();
-        Page<TestPagination> page = testPaginationSearchRepository.search(searchQuery.getQuery(), pageable);
+        log.debug("REST request to get a search page of TestPaginations for query {}", query);
+        Page<TestPagination> page = testPaginationSearchRepository.search(queryStringQuery(query), pageable); 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/testPaginations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}    
+    }
+    
 }

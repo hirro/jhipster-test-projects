@@ -1,7 +1,9 @@
 package com.mycompany.myapp.service;
 
+import com.mycompany.myapp.domain.TestDtoService;
 import com.mycompany.myapp.web.rest.dto.TestDtoServiceDTO;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -33,8 +35,8 @@ public interface TestDtoServiceService {
     public void delete(Long id);
 
     /**
-     * search for the testDtoService corresponding
-     * to the query.
+     *  get all the testDtoServices.
+     *  @return the list of entities
      */
     public List<TestDtoServiceDTO> search(String query);
 }

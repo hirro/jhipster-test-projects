@@ -1,23 +1,24 @@
 package com.mycompany.myapp.service.impl;
 
+import com.mycompany.myapp.service.TestDtoServiceService;
 import com.mycompany.myapp.domain.TestDtoService;
 import com.mycompany.myapp.repository.TestDtoServiceRepository;
 import com.mycompany.myapp.repository.search.TestDtoServiceSearchRepository;
-import com.mycompany.myapp.service.TestDtoServiceService;
 import com.mycompany.myapp.web.rest.dto.TestDtoServiceDTO;
 import com.mycompany.myapp.web.rest.mapper.TestDtoServiceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing TestDtoService.
@@ -27,16 +28,16 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 public class TestDtoServiceServiceImpl implements TestDtoServiceService{
 
     private final Logger log = LoggerFactory.getLogger(TestDtoServiceServiceImpl.class);
-
+    
     @Inject
     private TestDtoServiceRepository testDtoServiceRepository;
-
+    
     @Inject
     private TestDtoServiceMapper testDtoServiceMapper;
-
+    
     @Inject
     private TestDtoServiceSearchRepository testDtoServiceSearchRepository;
-
+    
     /**
      * Save a testDtoService.
      * @return the persisted entity
@@ -54,7 +55,7 @@ public class TestDtoServiceServiceImpl implements TestDtoServiceService{
      *  get all the testDtoServices.
      *  @return the list of entities
      */
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) 
     public List<TestDtoServiceDTO> findAll() {
         log.debug("Request to get all TestDtoServices");
         List<TestDtoServiceDTO> result = testDtoServiceRepository.findAll().stream()
@@ -67,7 +68,7 @@ public class TestDtoServiceServiceImpl implements TestDtoServiceService{
      *  get one testDtoService by id.
      *  @return the entity
      */
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) 
     public TestDtoServiceDTO findOne(Long id) {
         log.debug("Request to get TestDtoService : {}", id);
         TestDtoService testDtoService = testDtoServiceRepository.findOne(id);
@@ -84,18 +85,20 @@ public class TestDtoServiceServiceImpl implements TestDtoServiceService{
         testDtoServiceSearchRepository.delete(id);
     }
 
+
     /**
      * search for the testDtoService corresponding
      * to the query.
      */
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) 
     public List<TestDtoServiceDTO> search(String query) {
-        log.debug("REST request to search TestDtoPaginations for query {}", query);
-        List<TestDtoServiceDTO> result = new ArrayList<>();
+        log.debug("Request to search TestDtoServices with query {}", query);
+        List<TestDtoServiceDTO> result = new LinkedList<>();
         testDtoServiceSearchRepository.search(queryStringQuery(query)).forEach((item) -> {
             result.add(testDtoServiceMapper.testDtoServiceToTestDtoServiceDTO(item));
-        });
+        });;
         return result;
     }
 
+    
 }

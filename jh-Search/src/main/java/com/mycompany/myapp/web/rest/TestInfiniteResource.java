@@ -137,10 +137,10 @@ public class TestInfiniteResource {
     @Timed
     public ResponseEntity<List<TestInfinite>> searchTestInfinites(@PathVariable String query, Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to search TestInfinites for query {}", query);
-        final SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryStringQuery(query)).build();
-        Page<TestInfinite> page = testInfiniteSearchRepository.search(searchQuery.getQuery(), pageable);
+        log.debug("REST request to get a search page of TestInfinites for query {}", query);
+        Page<TestInfinite> page = testInfiniteSearchRepository.search(queryStringQuery(query), pageable); 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/testInfinites");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}    
+    }
+    
 }

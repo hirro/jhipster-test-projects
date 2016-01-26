@@ -4,6 +4,8 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.TestPage;
 import com.mycompany.myapp.repository.TestPageRepository;
 import com.mycompany.myapp.repository.search.TestPageSearchRepository;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import com.mycompany.myapp.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -21,8 +23,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing TestPage.
@@ -32,13 +36,13 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 public class TestPageResource {
 
     private final Logger log = LoggerFactory.getLogger(TestPageResource.class);
-
+        
     @Inject
     private TestPageRepository testPageRepository;
-
+    
     @Inject
     private TestPageSearchRepository testPageSearchRepository;
-
+    
     /**
      * POST  /testPages -> Create a new testPage.
      */
@@ -87,7 +91,7 @@ public class TestPageResource {
     public ResponseEntity<List<TestPage>> getAllTestPages(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of TestPages");
-        Page<TestPage> page = testPageRepository.findAll(pageable);
+        Page<TestPage> page = testPageRepository.findAll(pageable); 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/testPages");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -133,9 +137,10 @@ public class TestPageResource {
     @Timed
     public ResponseEntity<List<TestPage>> searchTestPages(@PathVariable String query, Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to search TestPages for query {}", query);
-        Page<TestPage> page = testPageSearchRepository.search(queryStringQuery(query), pageable);
+        log.debug("REST request to get a search page of TestPages for query {}", query);
+        Page<TestPage> page = testPageSearchRepository.search(queryStringQuery(query), pageable); 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/testPages");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}
+    }
+    
 }

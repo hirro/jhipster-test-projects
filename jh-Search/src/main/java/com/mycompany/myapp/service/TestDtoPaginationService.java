@@ -5,6 +5,9 @@ import com.mycompany.myapp.web.rest.dto.TestDtoPaginationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Service Interface for managing TestDtoPagination.
  */
@@ -34,8 +37,8 @@ public interface TestDtoPaginationService {
     public void delete(Long id);
 
     /**
-     * search for the testDtoPagination corresponding
-     * to the query.
+     *  get all the testDtoPaginations.
+     *  @return the list of entities
      */
     public Page<TestDtoPagination> search(String query, Pageable pageable);
 }

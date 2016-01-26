@@ -3,10 +3,10 @@ package com.mycompany.myapp.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.TestDtoPagination;
 import com.mycompany.myapp.service.TestDtoPaginationService;
-import com.mycompany.myapp.web.rest.dto.TestDtoPaginationDTO;
-import com.mycompany.myapp.web.rest.mapper.TestDtoPaginationMapper;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import com.mycompany.myapp.web.rest.util.PaginationUtil;
+import com.mycompany.myapp.web.rest.dto.TestDtoPaginationDTO;
+import com.mycompany.myapp.web.rest.mapper.TestDtoPaginationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,6 +25,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing TestDtoPagination.
@@ -34,13 +37,13 @@ import java.util.stream.Collectors;
 public class TestDtoPaginationResource {
 
     private final Logger log = LoggerFactory.getLogger(TestDtoPaginationResource.class);
-
+        
     @Inject
     private TestDtoPaginationService testDtoPaginationService;
-
+    
     @Inject
     private TestDtoPaginationMapper testDtoPaginationMapper;
-
+    
     /**
      * POST  /testDtoPaginations -> Create a new testDtoPagination.
      */
@@ -88,7 +91,7 @@ public class TestDtoPaginationResource {
     public ResponseEntity<List<TestDtoPaginationDTO>> getAllTestDtoPaginations(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of TestDtoPaginations");
-        Page<TestDtoPagination> page = testDtoPaginationService.findAll(pageable);
+        Page<TestDtoPagination> page = testDtoPaginationService.findAll(pageable); 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/testDtoPaginations");
         return new ResponseEntity<>(page.getContent().stream()
             .map(testDtoPaginationMapper::testDtoPaginationToTestDtoPaginationDTO)
@@ -133,15 +136,15 @@ public class TestDtoPaginationResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Transactional(readOnly = true)
     public ResponseEntity<List<TestDtoPaginationDTO>> searchTestDtoPaginations(@PathVariable String query, Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to search TestDtoPaginations for query {}", query);
-        Page<TestDtoPagination> page = testDtoPaginationService.search(query, pageable);
+        log.debug("REST request to get a search page of TestDtoPaginations for query {}", query);
+        Page<TestDtoPagination> page = testDtoPaginationService.search(query, pageable); 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/testDtoPaginations");
         return new ResponseEntity<>(page.getContent().stream()
             .map(testDtoPaginationMapper::testDtoPaginationToTestDtoPaginationDTO)
             .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
-
-	}
-
+    }
+    
 }
