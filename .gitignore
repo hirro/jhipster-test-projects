@@ -7,10 +7,7 @@
 **/.gitignore
 
 **/.jhipster
-**/src/main/docker
-**/src/main/resources
-**/src/main/webapp
-**/src/test
+**/src
 **/pom.xml
 **/bower.json
 **/Gruntfile.js

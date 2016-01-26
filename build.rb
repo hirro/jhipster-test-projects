@@ -10,7 +10,15 @@ class String
 end
 
 projectDirectories =  ['jh', 'jh-Search']
-entities = [ 'TestDefaultObject', 'TestDtoPagination', 'TestDtoService', 'TestInfinite', 'TestPage', 'TestPagination']
+entities = [ 
+	'TestDefaultObject', 
+	'TestDtoPagination', 
+	'TestDtoService', 
+	'TestInfinite', 
+	'TestPage', 
+	'TestPagination', 
+	'TestDtoServiceNoMapStruct',
+	'TestDtoPaginationNoMapStruct']
 
 # Remove all uncommited files
 system("git clean -d -x -f")
