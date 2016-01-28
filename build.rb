@@ -1,3 +1,4 @@
+require 'fileutils'
 
 class String
   def underscore
@@ -7,6 +8,23 @@ class String
     tr("-", "_").
     downcase
   end
+end
+
+
+class Needles
+ 	def self.insertAfterNeedle(needle, text, file) 
+		tempfile = File.open("file.tmp", 'w')
+		f = File.new(file)
+		f.each do |line|
+		  tempfile << line
+		  if line.include? needle
+		    tempfile << text << "\n"
+		  end
+		end
+		f.close
+		tempfile.close
+		FileUtils.mv("file.tmp", file)
+	end
 end
 
 projectDirectories =  ['jh', 'jh-Search']
@@ -56,5 +74,10 @@ projectDirectories.each { |project|
 			f.write("</databaseChangeLog>\n")
 		}
 		puts "Add the file #{changelog} to `src/main/resources/config/liquibase/master.xml`"
+
+		Needles.insertAfterNeedle(
+			'<!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->', 
+			'<include file="classpath:config/liquibase/changelog/testdata.xml" relativeToChangelogFile="false"/>', 
+			'src/main/resources/config/liquibase/master.xml')
 	end
 }
