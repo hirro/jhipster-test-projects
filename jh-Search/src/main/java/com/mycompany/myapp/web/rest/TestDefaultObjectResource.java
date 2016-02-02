@@ -4,9 +4,12 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.TestDefaultObject;
 import com.mycompany.myapp.repository.TestDefaultObjectRepository;
 import com.mycompany.myapp.repository.search.TestDefaultObjectSearchRepository;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing TestDefaultObject.
@@ -30,13 +33,13 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 public class TestDefaultObjectResource {
 
     private final Logger log = LoggerFactory.getLogger(TestDefaultObjectResource.class);
-
+        
     @Inject
     private TestDefaultObjectRepository testDefaultObjectRepository;
-
+    
     @Inject
     private TestDefaultObjectSearchRepository testDefaultObjectSearchRepository;
-
+    
     /**
      * POST  /testDefaultObjects -> Create a new testDefaultObject.
      */
@@ -132,5 +135,5 @@ public class TestDefaultObjectResource {
             .stream(testDefaultObjectSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
             }
-
+    
 }

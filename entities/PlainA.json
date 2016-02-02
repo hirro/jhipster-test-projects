@@ -1,0 +1,22 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "plainB",
+            "otherEntityName": "plainB",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "plainA"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "name",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20160202153511",
+    "dto": "no",
+    "service": "no",
+    "pagination": "pagination"
+}
